@@ -43,7 +43,8 @@ Sensors/imu.o: ../Sensors/imu.c ../Core/Inc/imu.h ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
- ../Core/Inc/spi.h ../Core/Inc/main.h
+ C:/Users/David/STM32CubeIDE/workspace_1.8.0/nvc/Drivers/STMemsDrivers/Inc/lsm6dsox_reg.h \
+ ../Core/Inc/main.h ../Core/Inc/spi.h
 
 ../Core/Inc/imu.h:
 
@@ -137,6 +138,8 @@ Sensors/imu.o: ../Sensors/imu.c ../Core/Inc/imu.h ../Core/Inc/main.h \
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
 
-../Core/Inc/spi.h:
+C:/Users/David/STM32CubeIDE/workspace_1.8.0/nvc/Drivers/STMemsDrivers/Inc/lsm6dsox_reg.h:
 
 ../Core/Inc/main.h:
+
+../Core/Inc/spi.h:

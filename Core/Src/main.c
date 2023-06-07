@@ -52,7 +52,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-struct LSM6DSO lsm6;
+static uint16_t data_temperature_raw;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,12 +63,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void accGyroInit(){
-	lsm6.acc.fullScale = FS_XL_8; //8g
-	lsm6.acc.operatingMode = NORMAL_104;
-	lsm6.gyro.fullScale = FS_G_2000; //2000deg
-	lsm6.gyro.operatingMode = NORMAL_104;
-}
+// Device initialization
 
 /* USER CODE END 0 */
 
@@ -115,14 +110,8 @@ int main(void)
   MX_TIM7_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  uint8_t pTxData[2] = {0};
-  uint8_t pRxData[2] = {0};
-  uint16_t temp = 0;
-
-  accGyroInit();
-  LMS6DSO_Init(lsm6);
   // Initizalize all the peripherals
-
+  lsm6dsox_struct_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -132,27 +121,18 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	// Read temperature register
-	pTxData[0] = OUT_TEMP_L|0x80;
-	HAL_GPIO_WritePin(CS_LSM6DSOX_GPIO_Port, CS_LSM6DSOX_Pin, GPIO_PIN_RESET);
-	HAL_SPI_Transmit(&hspi1, pTxData, 1, 100);
-	HAL_SPI_Receive(&hspi1, pRxData, 2, 100);
-	HAL_GPIO_WritePin(CS_LSM6DSOX_GPIO_Port, CS_LSM6DSOX_Pin, GPIO_PIN_SET);
-	//temp = pRxData[2]<<8|pRxData[1];
-	HAL_Delay(100);
-	//HAL_GPIO_WritePin(CS_LSM6DSOX_GPIO_Port, CS_LSM6DSOX_Pin, GPIO_PIN_RESET);
-	//pTxData[0] = 0x0f | 0x80;
-	//pTxData[1] = 0;
-	//uint8_t equal = 0;
-	//HAL_SPI_TransmitReceive(&hspi1, pTxData, pRxData, 2, 100);
-	//HAL_SPI_Transmit(&hspi1, (uint8_t *)&pTxData, 1, 100);
-	//HAL_Delay(100);
-	//HAL_SPI_Receive(&hspi1, (uint8_t *)&pRxData, 1, 100);
-	//if(pRxData[1] == 0x6c)
-	//	equal = 1;
-	// Communication end
-	//HAL_GPIO_WritePin(CS_LSM6DSOX_GPIO_Port, CS_LSM6DSOX_Pin, GPIO_PIN_SET);
+	  // Read who i am
+	  uint8_t whoiam;
+	  int not = 0;
+	  lsm6dsox_device_id_get(&LSM6DSOX_ctx, &whoiam);
+	  if(whoiam != 0x6C)
+		  not = 1;
 
+	  // Read temperature data
+	  memset(&data_temperature_raw, 0x00, sizeof(uint16_t));
+	  lsm6dsox_temperature_raw_get(&LSM6DSOX_ctx, &data_temperature_raw);
+	  float_t temp_C = lsm6dsox_from_lsb_to_celsius(data_temperature_raw);
+	  not = 0;
 
 
 

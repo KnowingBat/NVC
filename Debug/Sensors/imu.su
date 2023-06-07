@@ -1,4 +1,3 @@
-imu.c:13:19:LIS2DW12_Init	4	static
-imu.c:19:19:LMS6DSO_WriteReg	32	static
-imu.c:28:19:LMS6DSO_ReadReg	24	static
-imu.c:43:6:LMS6DSO_Init	24	static
+imu.c:16:16:platform_write	24	static
+imu.c:26:16:platform_read	24	static
+imu.c:36:6:lsm6dsox_struct_init	4	static

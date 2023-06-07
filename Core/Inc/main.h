@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "lsm6dsox_reg.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
