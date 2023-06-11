@@ -27,6 +27,7 @@
 #include "spi.h"
 #include "tim.h"
 #include "usb_device.h"
+#include "usbd_cdc_if.h"
 #include "gpio.h"
 #include "imu.h"
 
@@ -111,7 +112,7 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
   // Initizalize all the peripherals
-  lsm6dsox_struct_init();
+  IMU_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -127,14 +128,17 @@ int main(void)
 	  lsm6dsox_device_id_get(&LSM6DSOX_ctx, &whoiam);
 	  if(whoiam != 0x6C)
 		  not = 1;
+	  char buffOut[20];
+	  sprintf(buffOut, "%d\r\n", whoiam);
+
+	  CDC_Transmit_FS(buffOut, 6);
 
 	  // Read temperature data
-	  memset(&data_temperature_raw, 0x00, sizeof(uint16_t));
-	  lsm6dsox_temperature_raw_get(&LSM6DSOX_ctx, &data_temperature_raw);
-	  float_t temp_C = lsm6dsox_from_lsb_to_celsius(data_temperature_raw);
-	  not = 0;
-
-
+	  //memset(&data_temperature_raw, 0x00, sizeof(uint16_t));
+	  //lsm6dsox_temperature_raw_get(&LSM6DSOX_ctx, &data_temperature_raw);
+	  //float_t temp_C = lsm6dsox_from_lsb_to_celsius(data_temperature_raw);
+	  //not = 0;
+	  HAL_Delay(1000);
 
   }
   /* USER CODE END 3 */
